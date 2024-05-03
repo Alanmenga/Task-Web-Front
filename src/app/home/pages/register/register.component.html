@@ -1,0 +1,139 @@
+<div class="container mt-5 #mainContent">
+    <div class="text-center">
+        <div class="mb-2">
+            <span class="fs-1 fw-semibold">Regístrate</span>
+        </div>
+        <div class="subtitulo">
+            <span class="fs-5">Completa este simple formulario para ingresar.</span>
+        </div>
+    </div>
+    <div class="mb-3 mt-3">
+        <form [formGroup]="registerForm">
+
+            <!-- USUARIO -->
+            <div class="mb-2">
+                <label for="inputControl1" class="form-label">Usuario</label>
+                <input #inputUsuario [formControl]="usernameControl" type="text" class="form-control" id="inputControl1">
+            </div>
+            <div class="mb-2" *ngIf="this.usernameControl.value.length > 0 && userExist">
+                <span class="text-danger">
+                    El usuario esta ocupado, probá otro
+                </span>
+            </div>
+            <div class="mb-2" *ngIf="this.usernameControl.value.length == 0 && this.usernameControl.touched">
+                <span class="text-danger">
+                    El usuario es requerido
+                </span>
+            </div> 
+            <div class="mb-2" *ngIf="this.noWhitespaceUsername() && this.usernameControl.value.length > 0">
+                <span class="text-danger">
+                    El usuario no puede tener espacios en blanco
+                </span>
+            </div>
+            
+            <!-- CONTRASEÑA -->
+            <div class="mb-2">
+                <label for="inputControl3" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <input #inputNombre formControlName="password" [type]="getPasswordFieldType()" class="form-control" id="inputControl3"
+                        aria-describedby="passwordHelpBlock">
+                    <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                        <i class="bi" [ngClass]="{'bi-eye': mostrarContrasena, 'bi-eye-slash': !mostrarContrasena}"></i>
+                    </button>
+                </div>
+            </div>
+             
+            <div class="mb-3">
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('hasSpecialCharacters')" class="text-danger">
+                    La contraseña no puede contener caracteres especiales
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('numbersCharacters') && registerForm.get('password')?.value.length > 0" class="text-danger">
+                    La contraseña debe tener numeros
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('lettersCharacters') && registerForm.get('password')?.value.length > 0" class="text-danger">
+                    La contraseña debe tener minusculas y mayusculas
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.value.length < 8 && registerForm.get('password')?.value.length > 0" class="text-danger">
+                    La contraseña debe tener mas de 8 caracteres
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.value.length > 12" class="text-danger">
+                    La contraseña debe tener menos de 12 caracteres
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+                    <span class="text-danger">
+                        La contraseña es requerida
+                    </span>
+                </div>
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('whitespace') && registerForm.get('password')?.touched">
+                    <span class="text-danger">
+                        La contraseña no puede tener espacios en blanco
+                    </span>
+                </div>
+            </div>
+
+            <!-- TELEFONO -->
+            <div class="mb-2">
+                <label for="inputControl3" class="form-label">Telefono</label>
+                <input #inputPhone formControlName="phone" type="text" class="form-control" id="inputControl3" placeholder="0000-0000"
+                aria-describedby="passwordHelpBlock" (input)="inputPhone.value = formatPhone(inputPhone.value)" maxlength="8">
+            </div>
+
+            <!-- FECHA -->
+            <div class="mb-2">
+                <label for="age" class="form-label">Fecha de Nacimiento:</label>
+                <input type="date" id="age" name="age" class="form-control" formControlName="age">
+            </div>
+
+            <!-- GENERO -->
+            <div class="mb-2">
+            <label for="inputControl3" class="form-label">Género</label>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="gender" type="radio" name="gender" id="gender" formControlName="gender" value="male" checked>
+                <label class="form-check-label" for="exampleRadios1">Masculino</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="gender" type="radio" name="gender" id="gender" formControlName="gender" value="female">
+                <label class="form-check-label" for="exampleRadios2">Femenino</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="gender" type="radio" name="gender" id="gender" formControlName="gender" value="other">
+                <label class="form-check-label" for="exampleRadios3">Otro</label>
+              </div>
+            </div>
+
+            <div class="mb-2" *ngIf="this.genderRequided">
+                <span class="text-danger">
+                    La genero es requerido
+                </span>
+            </div>
+          </div>
+        </form>
+    </div>
+    <div class="mt-3" *ngIf="registerError">
+        <span class="text-danger">
+            {{errorMessage}}
+        </span>
+    </div>
+
+
+    <div class="mb-3 mt-4">
+        <!-- <button *ngIf="!sendingSubmit" (click)="onRegisterSubmit()" type="button" class="btn btn-secondary w-100 "> -->
+        <button *ngIf="!sendingSubmit" (click)="onRegisterSubmit()" type="button" class="btn btn-secondary w-100 ">
+            <span class="btn-text">Registrarse</span>
+        </button>
+        <button *ngIf="sendingSubmit" type="button" class="btn btn-secondary w-100" disabled="disabled">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="ms-2">Registrando...</span>
+        </button>
+    </div>
+    <div id="my-signin2"></div>
+    <div class="mb-3 mt-4 text-center">
+        <span class="color-grey">¿Ya tienes una cuenta? </span>
+        <a type="button" (click)="iniciarSesion()" >
+            <span class="fs-6 fw-semibold">
+            Iniciar sesión
+            </span>
+        </a>
+    </div>
+</div>

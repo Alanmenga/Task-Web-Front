@@ -1,0 +1,11 @@
+.container {
+  width: auto;
+  max-width: 450px;
+  margin-bottom: 80px;
+}
+
+.subtitulo {
+  color: rgba(60, 89, 182, 0.911);
+}
+
+
