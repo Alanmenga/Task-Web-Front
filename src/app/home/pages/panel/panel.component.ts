@@ -5,6 +5,7 @@ import { TaskService } from '../../services/task.service';
 import { Task } from '../../utils/task-interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddTaskModalComponent } from '../../shared/modals/add-task-modal/add-task-modal.component';
+import { LoginModalComponent } from '../../shared/modals/login-modal/login-modal.component';
 
 
 @Component({
@@ -25,10 +26,11 @@ export class PanelComponent implements OnInit{
   constructor( private taskService: TaskService,
                private ngbModal: NgbModal,
   ) {
-    this.getTask();
+    
   }
 
   ngOnInit(): void {
+    this.tieneSesion();
   }
 
   getTask() {
@@ -107,4 +109,13 @@ export class PanelComponent implements OnInit{
     return tareas.sort((a, b) => a.id - b.id);
   }
 
+
+  tieneSesion(){
+    const modalRef = this.ngbModal.open(LoginModalComponent, {
+      size: 'md',
+      keyboard: false
+  });
+  modalRef.componentInstance.infoMessage = "Es necesario iniciar sesión para ver el panel de tareas.";
+  this.getTask();
+  }
 }

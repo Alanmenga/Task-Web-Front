@@ -17,6 +17,8 @@ export class LoginComponent {
     isLogging: boolean = false;
     error: boolean = false;
     mostrarContrasena = false;
+    @Input() infoMessage: string = '';
+    @Input() isModal: boolean = false;
 
     constructor(private fb: FormBuilder,
                 private router: Router,
@@ -45,14 +47,24 @@ export class LoginComponent {
         let pass = this.loginForm.get('pass')?.value;
 
         if(this.loginForm.valid) {
-            this.userService.login(username,pass).subscribe({
-                next: (res:any) => {
-                    console.log("usuario logueado");
+            this.userService.login(username,pass).subscribe( 
+                (resp) => {
+                    if (this.isModal) {
+                      console.log("usuario logueado como ventana");
+                    } else {
+                      console.log("usuario logueado desde la pantalla login");
+                    }
                 },
-                error: (error) => {
-                    console.warn("error en el logueo");
+                (error) => {
+                    if (error.status === 401) {
+                        console.log("Credenciales inválidas");
+                        // Aquí puedes mostrar un mensaje de error al usuario o realizar alguna otra acción
+                    } else {
+                        console.error("Error en el inicio de sesión:", error);
+                        // Aquí puedes manejar otros errores de manera adecuada
+                    }
                 }
-            })
+            )
         }
 
     }

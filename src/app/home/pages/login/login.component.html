@@ -3,8 +3,9 @@
         <div class="mb-2">
             <span class="fs-1 fw-bold">Acceso</span>
         </div>
-        <div class="subtitulo">
-            <span class="fs-5">¡Bienvenido! Por favor, ingresa tus datos.</span>
+        <div class="c-blue-3">
+            <span class="fs-5" *ngIf="!infoMessage">¡Bienvenido! Por favor, ingresa tus datos.</span>
+            <p *ngIf="infoMessage" class="text-center text-danger">{{infoMessage}}</p>
         </div>
     </div>
     <form [formGroup]="loginForm">
