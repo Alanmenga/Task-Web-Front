@@ -1,0 +1,28 @@
+.task-panel {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.task-list {
+  /* padding: 10px; */
+  min-height: 100px;
+  margin-bottom: 10px;
+}
+
+.example-card {
+  max-width: 300px;
+  max-width: 300px;
+}
+
+
+.panel-main{
+  padding: 30px;
+}
+
+.button-add{
+  margin-bottom: 20px;
+}

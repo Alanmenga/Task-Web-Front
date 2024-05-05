@@ -20,5 +20,10 @@ export class UserService {
     userExist(username: string) {
         return this.http.get(`${this.baseUrl}/user/exists/${username}`, { responseType: 'text' });
     }
+
+    //USER-EXIST
+    login(username: string, pass: string) {
+        return this.http.post(`${this.baseUrl}/user/login`,{username, pass});
+    }
     
 }

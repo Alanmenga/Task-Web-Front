@@ -1,0 +1,14 @@
+.container {
+    width: auto;
+    max-width: 450px;
+    margin-bottom: 80px;
+  }
+  
+  .form-check-inline {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  
+  .subtitulo {
+    color: rgba(60, 89, 182, 0.911);
+  }

@@ -1,0 +1,61 @@
+
+<div class="panel-main">
+    <div class="button-add">
+        <button type="button" (click)="addTask()" class="btn btn-secondary">Agregar Tarea</button>
+    </div>
+    
+    <div class="task-panel">
+        <div class="col-md-4">
+            <h3>Pendientes</h3>
+            <div class="task-list">
+                <!-- Mostrar tareas pendientes -->
+                <div class="card mb-3" *ngFor="let task of tasksToDo" style="width: 18rem;">
+                        <div class="card-body">
+                            <h2 class="card-title">{{task.title}}</h2>
+                            <h4 class="card-title">{{task.description}}</h4>
+                            <select class="form-select" aria-label="Default select example" (change)="onStatusChange($event, task.id)">
+                                <option selected>Pendiente</option>
+                                <option value="inprogres">En progreso</option>
+                                <option value="done">Terminada</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>En Progreso</h3>
+            <div class="task-list">
+                <!-- Mostrar tareas en progreso -->
+                <div class="card mb-3" *ngFor="let task of tasksInProgres" style="width: 18rem;">
+                        <div class="card-body">
+                            <h2 class="card-title">{{task.title}}</h2>
+                            <h4 class="card-title">{{task.description}}</h4>
+                            <select class="form-select" aria-label="Default select example" (change)="onStatusChange($event, task.id)">
+                                <option value="todo">Pendiente</option>
+                                <option selected>En progreso</option>
+                                <option value="done">Terminada</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Terminadas</h3>
+            <div class="task-list">
+                <!-- Mostrar tareas terminadas -->
+                <div class="card mb-3" *ngFor="let task of tasksDone" style="width: 18rem;">
+                        <div class="card-body">
+                            <h2 class="card-title">{{task.title}}</h2>
+                            <h4 class="card-title">{{task.description}}</h4>
+                            <select class="form-select" aria-label="Default select example" (change)="onStatusChange($event, task.id)">
+                                <option value="todo">Pendiente</option>
+                                <option value="inprogres">En progreso</option>
+                                <option selected>Terminada</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

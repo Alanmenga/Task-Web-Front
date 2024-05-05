@@ -1,0 +1,39 @@
+<div class="container mt-5 #mainContent">
+    <div class="text-center">
+        <div class="subtitulo">
+            <span class="fs-5">Completa los datos de la tarea:</span>
+        </div>
+    </div>
+    <div class="mb-3 mt-3">
+        <form [formGroup]="addTaskForm">
+
+            <!-- TITULO -->
+            <div class="mb-2">
+                <label for="inputControl1" class="form-label">Titulo</label>
+                <input #inputUsuario formControlName="title"  type="text" class="form-control" id="inputControl1">
+            </div>
+            <div class="mb-2" *ngIf="addTaskForm.get('title')?.hasError('required') && addTaskForm.get('title')?.touched">
+                <span class="text-danger">
+                    El titulo es requerida
+                </span>
+            </div>
+            <!-- DESCRIPCION -->
+            <div class="mb-2">
+                <label for="inputControl1" class="form-label">Descripcion</label>
+                <input #inputUsuario formControlName="description"  type="text" class="form-control" id="inputControl1">
+            </div>
+            <div class="mb-2" *ngIf="addTaskForm.get('description')?.hasError('required') && addTaskForm.get('description')?.touched">
+                <span class="text-danger">
+                    La descripcion es requerida
+                </span>
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="mb-3 mt-4">
+        <button (click)="agregarTarea()" type="button" class="btn btn-secondary w-100 ">
+            <span class="btn-text">Agregar</span>
+        </button>
+    </div>
+</div>
