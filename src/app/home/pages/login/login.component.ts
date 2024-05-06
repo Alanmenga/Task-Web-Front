@@ -19,9 +19,11 @@ export class LoginComponent {
     loginForm: FormGroup;
     isLogging: boolean = false;
     error: boolean = false;
-    mostrarContrasena = false;
+    showPass = false;
     @Input() infoMessage: string = '';
     @Input() isModal: boolean = false;
+    invalidCredentials: boolean =false;
+    
 
     constructor(private fb: FormBuilder,
                 private router: Router,
@@ -38,11 +40,11 @@ export class LoginComponent {
     }
 
     togglePasswordVisibility(): void {
-        this.mostrarContrasena = !this.mostrarContrasena;
+        this.showPass = !this.showPass;
     }
 
     getPasswordFieldType(): string {
-        return this.mostrarContrasena ? 'text' : 'password';
+        return this.showPass ? 'text' : 'password';
     }
 
 
@@ -64,12 +66,14 @@ export class LoginComponent {
                     this.sessionService.iniciarSesion();
                     if (this.isModal) {
                       this.activeModal.close();
+                      this.router.navigateByUrl('/panel');
+                    }else{
+                        this.router.navigateByUrl('/panel');
                     }
-                    this.router.navigateByUrl('/panel');
                 },
                 (error) => {
                     if (error.status === 401) {
-                        console.log("Credenciales inválidas");
+                        this.invalidCredentials = true;
                         // Aquí puedes mostrar un mensaje de error al usuario o realizar alguna otra acción
                     } else {
                         console.error("Error en el inicio de sesión:", error);

@@ -47,16 +47,22 @@
                 <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('hasSpecialCharacters')" class="text-danger">
                     La contraseña no puede contener caracteres especiales
                 </div>
-                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('numbersCharacters') && registerForm.get('password')?.value.length > 0" class="text-danger">
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('numbersCharacters') 
+                                     && registerForm.get('password')?.value
+                                     && registerForm.get('password')?.value.length > 0" class="text-danger">
                     La contraseña debe tener numeros
                 </div>
-                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('lettersCharacters') && registerForm.get('password')?.value.length > 0" class="text-danger">
+                <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('lettersCharacters') 
+                                      && registerForm.get('password')?.value 
+                                      && registerForm.get('password')?.value.length > 0" class="text-danger">
                     La contraseña debe tener minusculas y mayusculas
                 </div>
-                <div class="mb-2" *ngIf="registerForm.get('password')?.value.length < 8 && registerForm.get('password')?.value.length > 0" class="text-danger">
+                <div class="mb-2" *ngIf="registerForm.get('password')?.value 
+                                      && registerForm.get('password')?.value.length < 8 
+                                      && registerForm.get('password')?.value.length > 0" class="text-danger">
                     La contraseña debe tener mas de 8 caracteres
                 </div>
-                <div class="mb-2" *ngIf="registerForm.get('password')?.value.length > 12" class="text-danger">
+                <div class="mb-2" *ngIf="registerForm.get('password')?.value && registerForm.get('password')?.value.length > 12" class="text-danger">
                     La contraseña debe tener menos de 12 caracteres
                 </div>
                 <div class="mb-2" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
@@ -118,13 +124,8 @@
 
 
     <div class="mb-3 mt-4">
-        <!-- <button *ngIf="!sendingSubmit" (click)="onRegisterSubmit()" type="button" class="btn btn-secondary w-100 "> -->
-        <button *ngIf="!sendingSubmit" (click)="onRegisterSubmit()" type="button" class="btn btn-secondary w-100 ">
+        <button (click)="onRegisterSubmit()" type="button" class="btn btn-secondary w-100 ">
             <span class="btn-text">Registrarse</span>
-        </button>
-        <button *ngIf="sendingSubmit" type="button" class="btn btn-secondary w-100" disabled="disabled">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span class="ms-2">Registrando...</span>
         </button>
     </div>
     <div id="my-signin2"></div>

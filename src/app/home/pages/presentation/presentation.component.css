@@ -1,0 +1,9 @@
+.container {
+  width: auto;
+  max-width: 7000px;
+  margin-bottom: 80px;
+}
+
+.icon-color {
+  color: #6c757d; /* Color de los botones btn-outline-secondary */
+}

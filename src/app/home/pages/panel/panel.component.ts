@@ -35,6 +35,10 @@ export class PanelComponent implements OnInit{
   }
 
   getTask() {
+    let userIdString: string | null = sessionStorage.getItem('user_id');
+    if(userIdString) {
+      this.user_id = parseInt(userIdString);
+    }
     this.taskService.getTaskByUser(this.user_id).subscribe( (resp) => {
       this.tasks = resp;
       this.divideTasks(this.tasks);
@@ -114,10 +118,9 @@ export class PanelComponent implements OnInit{
 
   tieneSesion(){
     let sessionId = sessionStorage.getItem('sessionId');
-    const userIdString: string | null = sessionStorage.getItem('user_id');
+  
 
-    if (userIdString != null && sessionId) {
-        this.user_id = parseInt(userIdString);
+    if (sessionId) {
         this.getTask();
     }else {
       const modalRef = this.ngbModal.open(LoginModalComponent, {
@@ -126,6 +129,11 @@ export class PanelComponent implements OnInit{
         keyboard: false
       });
       modalRef.componentInstance.infoMessage = "Es necesario iniciar sesión para ver el panel de tareas.";
+
+      modalRef.closed.subscribe(() => {
+
+        this.getTask();
+      });
     }
   }
 }

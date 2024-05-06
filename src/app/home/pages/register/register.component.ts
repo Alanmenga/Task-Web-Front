@@ -8,6 +8,8 @@ import { debounceTime } from 'rxjs';
 import { noSpecialCharactersValidator } from "../../shared/validators/no-special-characters.validator";
 import { lettersValidator } from '../../shared/validators/letters.validar';
 import { numbersValidator } from '../../shared/validators/numbers.validator';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RegisterSuccesComponent } from '../../shared/modals/register-modal/register-succes/register-succes.component';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +26,6 @@ export class RegisterComponent {
     passErrorL: boolean = false;
     registerError: boolean = false;
     errorMessage: string = '';
-    sendingSubmit: boolean = false;
     isSubscription: boolean = false;
     usernameControl: FormControl;
     passwordControl: FormControl;
@@ -34,22 +35,23 @@ export class RegisterComponent {
 
     constructor(private fb: FormBuilder,
                 private router: Router,
-                private userService: UserService) {
-                this.usernameControl = new FormControl('');
-                this.passwordControl = new FormControl('');
-                this.registerForm = this.fb.group({
-                    password: ['', [Validators.required, this.noWhitespaceValidator,noSpecialCharactersValidator, lettersValidator, numbersValidator]],
-                    phone: [''],
-                    age: [''],
-                    gender: ['', Validators.required],
-                });
+                private userService: UserService,
+                private ngbModal: NgbModal,) {
+        this.usernameControl = new FormControl('');
+        this.passwordControl = new FormControl('');
+        this.registerForm = this.fb.group({
+            password: ['', [Validators.required, this.noWhitespaceValidator,noSpecialCharactersValidator, lettersValidator, numbersValidator]],
+            phone: [''],
+            age: [''],
+            gender: ['', Validators.required],
+        });
     }
 
     ngOnInit(): void {
         this.usernameControl.valueChanges.pipe(
-            debounceTime(500)
+        debounceTime(500)
         ).subscribe((value: string) => {
-            if(value.length > 0){
+            if( value.length > 0){
                 this.userService.userExist(value).subscribe((resp: any) => {
                     if(resp.includes("no")){
                         this.userExist = false;
@@ -59,8 +61,9 @@ export class RegisterComponent {
                 });
             }
         });
-
     }
+
+    
 
 
     onRegisterSubmit() {
@@ -74,7 +77,9 @@ export class RegisterComponent {
 
         if(this.registerForm.valid && this.usernameValid()){
             this.userService.register(username, password, phone, age, gender).subscribe( resp => {
-                console.log("respuesta del registro --> ",resp);
+                this.registerForm.reset();
+                this.usernameControl.setValue('')
+                const modalRef = this.ngbModal.open(RegisterSuccesComponent, {size: 'md'});
             });
         }
     }
