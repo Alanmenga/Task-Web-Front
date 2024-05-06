@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
+import { LoginResponse } from "../shared/response/login-response";
+import { Observable } from "rxjs";
 
 
 @Injectable({
@@ -22,8 +24,8 @@ export class UserService {
     }
 
     //USER-EXIST
-    login(username: string, pass: string) {
-        return this.http.post(`${this.baseUrl}/user/login`,{username, pass});
+    login(username: string, pass: string) : Observable<LoginResponse> { 
+        return this.http.post<LoginResponse>(`${this.baseUrl}/user/login`,{username, pass});
     }
     
 }

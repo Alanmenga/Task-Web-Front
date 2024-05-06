@@ -16,8 +16,12 @@ export class TaskService {
         return this.http.get<Task[]>(`${this.baseUrl}/task`);
     }
 
-    postTask(title: string, description: string, state: string) {
-        return this.http.post(`${this.baseUrl}/task`, {title,description,state});
+    getTaskByUser(user_id: number) : Observable<Task[]> {
+        return this.http.get<Task[]>(`${this.baseUrl}/task/user/${user_id}`);
+    }
+
+    postTask(title: string, description: string, state: string, user_id:number) {
+        return this.http.post(`${this.baseUrl}/task`, {title,description,state,user_id});
     }
 
     updateTask(id: number, newState: string){

@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { LoginResponse } from '../../shared/response/login-response';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +25,9 @@ export class LoginComponent {
 
     constructor(private fb: FormBuilder,
                 private router: Router,
-                private userService: UserService) {
+                private userService: UserService,
+                private sessionService: SessionService,
+                @Optional() public activeModal: NgbActiveModal) {
         this.loginForm = this.fb.group({
             username: ['', [Validators.required]],
             pass: ['', [Validators.required]]
@@ -43,17 +48,24 @@ export class LoginComponent {
 
 
     onLoginSubmit() {
+
         let username = this.loginForm.get('username')?.value;
         let pass = this.loginForm.get('pass')?.value;
 
         if(this.loginForm.valid) {
             this.userService.login(username,pass).subscribe( 
-                (resp) => {
+                (resp: LoginResponse) => {
+                    const sessionId = resp.sessionId;
+                    const csrfToken = resp.csrfToken;
+                    const user_id = resp.user_id;
+                    sessionStorage.setItem('sessionId', sessionId)
+                    sessionStorage.setItem('csrfToken', csrfToken)
+                    sessionStorage.setItem('user_id', user_id.toString())
+                    this.sessionService.iniciarSesion();
                     if (this.isModal) {
-                      console.log("usuario logueado como ventana");
-                    } else {
-                      console.log("usuario logueado desde la pantalla login");
+                      this.activeModal.close();
                     }
+                    this.router.navigateByUrl('/panel');
                 },
                 (error) => {
                     if (error.status === 401) {
@@ -70,6 +82,9 @@ export class LoginComponent {
     }
 
     register() {
+        if(this.isModal){
+            this.activeModal.close();
+        }
         this.router.navigateByUrl('/register');
     }
 

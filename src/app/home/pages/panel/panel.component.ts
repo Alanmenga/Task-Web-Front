@@ -22,6 +22,7 @@ export class PanelComponent implements OnInit{
   tasksInProgres: Task[] = []; 
   tasksDone: Task[] = []; 
   contadorIdTareas: number = 0;
+  user_id: number = 0;
 
   constructor( private taskService: TaskService,
                private ngbModal: NgbModal,
@@ -34,7 +35,7 @@ export class PanelComponent implements OnInit{
   }
 
   getTask() {
-    this.taskService.getTask().subscribe( (resp) => {
+    this.taskService.getTaskByUser(this.user_id).subscribe( (resp) => {
       this.tasks = resp;
       this.divideTasks(this.tasks);
     });
@@ -51,11 +52,12 @@ export class PanelComponent implements OnInit{
           description : formData.value.description,
           state : "todo",
           create_date : null,
-          update_date : null
+          update_date : null,
+          user_id: this.user_id
         }
     
         this.tasksToDo.push(newTask);
-        this.taskService.postTask(newTask.title,newTask.description,newTask.state).subscribe( resp => {
+        this.taskService.postTask(newTask.title,newTask.description,newTask.state,newTask.user_id).subscribe( resp => {
           this.tasks = []
           this.tasksToDo = []; 
           this.tasksInProgres = []; 
@@ -111,11 +113,19 @@ export class PanelComponent implements OnInit{
 
 
   tieneSesion(){
-    const modalRef = this.ngbModal.open(LoginModalComponent, {
-      size: 'md',
-      keyboard: false
-  });
-  modalRef.componentInstance.infoMessage = "Es necesario iniciar sesión para ver el panel de tareas.";
-  this.getTask();
+    let sessionId = sessionStorage.getItem('sessionId');
+    const userIdString: string | null = sessionStorage.getItem('user_id');
+
+    if (userIdString != null && sessionId) {
+        this.user_id = parseInt(userIdString);
+        this.getTask();
+    }else {
+      const modalRef = this.ngbModal.open(LoginModalComponent, {
+        size: 'md',
+        backdrop: 'static',
+        keyboard: false
+      });
+      modalRef.componentInstance.infoMessage = "Es necesario iniciar sesión para ver el panel de tareas.";
+    }
   }
 }
